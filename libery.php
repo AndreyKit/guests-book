@@ -47,7 +47,8 @@ function url($link)
 //**************************************************************
 
 
-function smile($smile) {
+function smile($smile)
+{
     $pattern = [
         "/(\:\-\))|(\:\))/",
         "/(\:\-\()|(\:\()/",
@@ -58,13 +59,14 @@ function smile($smile) {
         "<img src='bad_smile.png'>",
     ];
 
-    return preg_replace($pattern,$smile_img,$smile);
+    return preg_replace($pattern, $smile_img, $smile);
 }
 
 //**************************************************************
 
 
-function bb_code($text) {
+function bb_code($text)
+{
 
     $pattern = [
         "/\[b\](.*)\[\/b\]/",
@@ -81,13 +83,12 @@ function bb_code($text) {
     return preg_replace(
         $pattern,
         $text_tags,
-        $text);
+        $text
+    );
 }
+//************************************** 
+function censor($text)
+{
 
-
-
-
-
-
-
-
+    return preg_match('/(дурак|редиска)/iu', $text) ? false : true;
+}

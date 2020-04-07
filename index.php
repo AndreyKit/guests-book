@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,12 +12,26 @@
         img {
             width: 1rem;
         }
+
+        .pageination a {
+            color: green;
+        }
+
+        .selectedpage {
+            color: blue
+        }
     </style>
 </head>
 <?php
 include("config.php");
 include("connect.php");
 include("libery.php");
+print_r($_SESSION);
+if (isset($_SESSION['bantime']) && ($_SESSION['bantime'] < time())) {
+    echo  time() - $_SESSION['bantime'] - time();
+}
+$_SESSION['bantime'] - time();
+
 
 $result_count = $mysqli->query('SELECT count(*) FROM guests'); //считаем количество строк в таблице
 $count = $result_count->fetch_array(MYSQLI_NUM)[0];
@@ -24,11 +41,16 @@ echo $pagecount = ceil($count / $pagesize);
 $currienpage = $_GET['page'] ?? 1;
 $startrow = ($currienpage - 1) * $pagesize;
 $pagenation = "";
-
+$pagenation .= "<div class='pageination'>";
 for ($i = 1; $i <= $pagecount; $i++); {
+    if ($currienpage == $i) {
+        $str = " class='selectedpage'";
+    } else {
+        $str = "";
+    }
     $pagenation .= "<a href='?page=$i'>$i</a>";
 }
-$pagenation .= "</div>";
+
 echo $pagenation;
 
 $result = $mysqli->query("SELECT * FROM guests LIMIT $startrow, $pagesize");
